@@ -22,7 +22,7 @@
     "Express": "^3.0.1",
     "express": "^4.17.1",
     "express-handlebars": "^3.0.0",
-    "handlebars": "^4.0.12",
+    "handlebars": "^4.1.2",
     "mongodb": "^3.1.10",
     "node": "^13.1.0"
   }
