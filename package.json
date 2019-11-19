@@ -22,8 +22,9 @@
     "Express": "^3.0.1",
     "express": "^4.17.1",
     "express-handlebars": "^3.0.0",
+    "forever": "^1.0.0",
     "handlebars": "^4.0.12",
-    "node": "^13.1.0",
-    "mysql": "^2.8.0"
+    "mysql": "^2.8.0",
+    "node": "^13.1.0"
   }
 }
