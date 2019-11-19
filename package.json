@@ -1,0 +1,29 @@
+{
+  "name": "final-project",
+  "version": "1.0.0",
+  "description": "need to get at least an 80% to maintain a B in this class.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "",
+    "prestart": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lobrovir/Project_52"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/lobrovir/Project_52/issues"
+  },
+  "homepage": "https://github.com/lobrovir/Project_52#readme",
+  "dependencies": {
+    "Express": "^3.0.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.0.0",
+    "handlebars": "^4.0.12",
+    "mongodb": "^3.1.10",
+    "node": "^13.1.0"
+  }
+}

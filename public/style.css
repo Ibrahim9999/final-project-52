@@ -1,0 +1,158 @@
+body
+{
+  /*font-family: 'Roboto', sans-serif;*/
+  margin: 0;
+  background: black;
+}
+
+tr.patient-row
+{
+    border-style: solid;
+}
+
+tr.doctor-row
+{
+    border-style: solid;
+}
+
+tr.medication-row
+{
+    border-style: solid;
+}
+
+tr.clinic-row
+{
+    border-style: solid;
+}
+
+a
+{
+  text-decoration: none;
+  color: #f67811;
+}
+
+.contents
+{
+	text-decoration: underline;
+	color: #f93baa;
+}
+
+a:hover
+{
+  text-decoration: underline;
+  color: cyan;
+}
+
+header a {
+  color: #fff;
+}
+
+.site-title
+{
+  /*font-family: "Roboto Slab", serif;*/
+  font-size: 60px;
+  font-weight: 100;
+  margin: 0 0 0 20px;
+  padding-top: 30px;
+}
+
+.site-title a:hover
+{
+  text-decoration: underline;
+}
+
+.content {
+  display: flex;
+}
+
+.homepage h2
+{
+	color: #ffffff;
+}
+.homepage li
+{
+	color: #ffffff;
+}
+.homepage ul
+{
+	color: #ffffff;
+}
+
+.menu-thumbnails
+{
+	width: 40px;
+	height:40px;
+}
+
+.contents-bar
+{
+	width: 200px;
+	background-image: url('/backgrounds/black_rosco.jpg');
+	background-repeat: repeat-y;
+}
+
+.search-input-container
+{
+  width: 95%;
+  margin: 20px 0;
+  align-items: center;
+  display: flex;
+  align-items: center;
+}
+
+.search-input 
+{
+  font-size: 14px;
+  flex: 1 auto;
+  width: 33%;
+  margin-left: 1px;
+  padding: 3px;
+  border: 1px solid #dadada;
+  border-radius: 5px;
+}
+
+.action-button
+{
+  font-size: 16px;
+  color: white;
+  padding: 5px;
+  background-color: #000;
+  border: 1px solid #ababab;
+  border-radius: 5px;
+  font-weight: lighter;
+  cursor: pointer;
+}
+
+.action-button:hover
+{
+  background-color: #f9d2b2;
+  border-color: #333;
+  color: #333;
+}
+
+search-button
+{
+  width: 50%;
+}
+
+.error-page
+{
+  font-family: "Roboto Slab", serif;
+  text-align: center;
+}
+
+.error-page h2
+{
+  font-size: 128px;
+  margin-top: 50px;
+  margin-bottom: 0;
+  color: white;
+}
+
+.error-page h3
+{
+  font-size: 32px;
+  margin: 0;
+  margin-left: 50px;
+  color: white;
+}

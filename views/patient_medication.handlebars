@@ -1,0 +1,20 @@
+<main class="content">
+
+	<table id="patient-medication-table" align="center">
+		<thead>
+			<th>SSN</th>
+			<th>Med ID</th>
+		<thead>
+		<tbody>
+			{{#each patient_medicationArray}}
+				
+				<tr class="patient-medication-row">
+					<td>{{ssn}}</td>
+					<td>{{mid}}</td>
+				</tr>
+				
+			{{/each}}
+		</tbody>
+	</table>
+	
+</main>

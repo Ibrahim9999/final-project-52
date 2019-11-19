@@ -1,0 +1,28 @@
+<main class="content">
+
+	<table id="clinic-table" align="center">
+		<thead>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Address</th>
+			<th>City</th>
+			<th>State</th>
+			<th>Zip</th>
+		<thead>
+		<tbody>
+			{{#each clinicArray}}
+				
+				<tr class="clinic-row">
+					<td>{{id}}</td>
+					<td>{{name}}</td>
+					<td>{{address}}</td>
+					<td>{{city}}</td>
+					<td>{{state}}</td>
+					<td>{{zip}}</td>
+				</tr>
+				
+			{{/each}}
+		</tbody>
+	</table>
+	
+</main>

@@ -1,0 +1,24 @@
+<main class="content">
+
+	<table id="doctor-table" align="center">
+		<thead>
+			<th>ID</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Clinic ID</th>
+		<thead>
+		<tbody>
+			{{#each doctorArray}}
+				
+				<tr class="doctor-row">
+					<td>{{id}}</td>
+					<td>{{fname}}</td>
+					<td>{{lname}}</td>
+					<td>{{cid}}</td>
+				</tr>
+				
+			{{/each}}
+		</tbody>
+	</table>
+	
+</main>

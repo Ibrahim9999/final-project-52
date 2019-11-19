@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Pharmacy Database</title>
+		<link rel="stylesheet" href="/style.css">
+		
+		<script src="/index.js" charset="utf-8" defer></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.runtime.js"></script>
+		
+	</head>
+
+	<body>
+		
+		<table class="contents-bar-container">
+			<tbody>
+				<tr>
+					<td class="contents-bar" valign="top">
+						<br>
+						<br>
+						
+						<center>
+							<b><font size="6" color="#3af2f9">Contents</font></b>
+							
+							<div class="search-input-container">
+								  <input type="text" placeholder="Search..." name="search-text" id="search-text" class="search-input">
+							</div>
+
+							<button id="search-button" class="action-button">Search</button>
+						</center>
+						
+						<hr>
+						
+						<table>
+							<tbody>
+								<tr>
+									<td>
+										<a href="index.html"><img border="0" src="thumbnails/home.png" alt="Home" class="menu-thumbnails"></a>
+									</td>
+									
+									<td valign="middle">
+										<a href="index.html" class="contents"><font size="5">Home</font></a>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<a href="patient.html"><img border="0" src="thumbnails/equations.png" alt="Patients" class="menu-thumbnails"></a>
+									</td>
+									
+									<td valign="middle">
+										<a href="patient.html" class="contents"><font size="5">Patients</font></a>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<a href="medication.html"><img border="0" src="thumbnails/fractals.jpg" alt="Medication" class="menu-thumbnails"></a>
+									</td>
+									
+									<td valign="middle">
+										<a href="medication.html" class="contents"><font size="5">Medication</font></a>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<a href="doctor.html"><img border="0" src="thumbnails/designs.png" alt="Doctors" class="menu-thumbnails"></a>
+									</td>
+									
+									<td valign="middle">
+										<a href="doctor.html" class="contents"><font size="5">Doctors</font></a>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<a href="clinic.html"><img border="0" src="thumbnails/other.jpg" alt="Clinics" class="menu-thumbnails"></a>
+									</td>
+									
+									<td valign="middle">
+										<a href="clinic.html" class="contents"><font size="5">Clinics</font></a>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<a href="patient_medication.html"><img border="0" src="thumbnails/fractals.jpg" alt="Patient-Medication" class="menu-thumbnails"></a>
+									</td>
+									
+									<td valign="middle">
+										<a href="patient_medication.html" class="contents"><font size="5">Patient-Medication</font></a>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<br>
+									</td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</td>
+					
+					<td valign="top">
+										
+						<header>
+							
+							<h1 class="site-title"><a href="https://github.com/lobrovir/Project_52">Pharmacy Database</a></h1>
+							<br>
+							
+						</header>
+						
+						{{{body}}}
+						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</body>
+</html>

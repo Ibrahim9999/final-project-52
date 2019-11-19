@@ -1,0 +1,32 @@
+[
+  {
+    "ssn": "7334920091",
+    "fname": "Caroline",
+	"lname": "Stevenson",
+    "bdate": "01/05/2011"
+  },
+  {
+    "ssn": "102384662",
+    "fname": "John",
+	"lname": "Johnson",
+    "bdate": "03/22/1945"
+  },
+  {
+    "ssn": "934772337",
+    "fname": "Victoia",
+	"lname": "Addams",
+    "bdate": "05/11/1963"
+  },
+  {
+    "ssn": "378455109",
+    "fname": "Benjamin",
+	"lname": "Norris",
+    "bdate": "08/17/1987"
+  },
+  {
+    "ssn": "255788922",
+    "fname": "Emily",
+	"lname": "Langford",
+    "bdate": "06/13/2016"
+  }
+]

@@ -1,0 +1,22 @@
+<main class="content">
+
+	<table id="medication-table" align="center">
+		<thead>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Pregnancy Safe</th>
+		<thead>
+		<tbody>
+			{{#each medicationArray}}
+				
+				<tr class="medication-row">
+					<td>{{id}}</td>
+					<td>{{name}}</td>
+					<td>{{psafe}}</td>
+				</tr>
+				
+			{{/each}}
+		</tbody>
+	</table>
+	
+</main>

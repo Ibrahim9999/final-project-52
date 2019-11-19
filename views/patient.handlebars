@@ -1,0 +1,24 @@
+<main class="content">
+
+	<table id="patient-table" align="center">
+		<thead>
+			<th>SSN</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Birthdate</th>
+		<thead>
+		<tbody>
+			{{#each patientArray}}
+				
+				<tr class="patient-row">
+					<td>{{ssn}}</td>
+					<td>{{fname}}</td>
+					<td>{{lname}}</td>
+					<td>{{bdate}}</td>
+				</tr>
+				
+			{{/each}}
+		</tbody>
+	</table>
+	
+</main>
