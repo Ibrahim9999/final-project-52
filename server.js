@@ -9,15 +9,15 @@ var express = require('express');
 var expressHandlebars = require('express-handlebars');
 var path = require('path');
 var fs = require('fs');
+var mysql = require('./dbcon.js');
 
 
 var app = express();
-var port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
-
 app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+app.set('port', process.argv[2]);
 
 
 var patientArray = JSON.parse(fs.readFileSync("patient.json"));
@@ -26,28 +26,7 @@ var doctorArray = JSON.parse(fs.readFileSync("doctor.json"));
 var clinicArray = JSON.parse(fs.readFileSync("clinic.json"));
 var patient_medicationArray = JSON.parse(fs.readFileSync("patient_medication.json"));
 
-/*
-app.get('/posts/:n', function (req, res, next)
-{
-	var index = req.params.n;
-	
-	if (index >= 0 && index < postArray.length)
-	{
-		res.status(200).render('partials/posts',
-		{
-			title: postArray[index].title,
-			reference: postArray[index].reference,
-			image1: postArray[index].image1,
-			image2: postArray[index].image2,
-			image3: postArray[index].image3,
-			description: postArray[index].description
-		});
-	}
-	else
-		res.status(404).render('404', {});
-	
-});
-*/
+
 app.get('/', function (req, res)
 {
 	res.status(200).render('home');
@@ -228,10 +207,16 @@ app.get('/patients_medications.html', function (req, res)
 	});
 });
 
-app.get("*", function (req, res) {
-	res.status(404).render('404', {});
+app.use(function(req,res)
+{
+  res.status(404).res.render('404');
+});
+app.use(function(err, req, res, next)
+{
+  console.error(err.stack);
+  res.status(500).res.render('500');
 });
 
-app.listen(port, function () {
-	console.log("== Server is listening on port", port);
+app.listen(app.get('port'), function(){
+  console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
