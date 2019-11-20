@@ -9,6 +9,11 @@
 		
 		<script src="/index.js" charset="utf-8" defer></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.runtime.js"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"</script>
+		
+		{{#each jsscripts}}
+			<script src="/static/{{this}}"></script>
+		{{/each}}
 		
 	</head>
 
@@ -49,51 +54,51 @@
 								
 								<tr class="menu-item">
 									<td class="menu-thumbnail-container">
-										<a href="patient.html"><img border="0" src="thumbnails/equations.png" alt="Patients" class="menu-thumbnail"></a>
+										<a href="patient"><img border="0" src="thumbnails/equations.png" alt="Patients" class="menu-thumbnail"></a>
 									</td>
 									
 									<td valign="middle" class="menu-text-container">
-										<a href="patient.html" class="menu-text"><font size="5">Patients</font></a>
+										<a href="patient" class="menu-text"><font size="5">Patients</font></a>
 									</td>
 								</tr>
 								
 								<tr class="menu-item">
 									<td class="menu-thumbnail-container">
-										<a href="medication.html"><img border="0" src="thumbnails/fractals.jpg" alt="Medication" class="menu-thumbnail"></a>
+										<a href="medication"><img border="0" src="thumbnails/fractals.jpg" alt="Medication" class="menu-thumbnail"></a>
 									</td>
 									
 									<td valign="middle" class="menu-text-container">
-										<a href="medication.html" class="menu-text"><font size="5">Medication</font></a>
+										<a href="medication" class="menu-text"><font size="5">Medication</font></a>
 									</td>
 								</tr>
 								
 								<tr class="menu-item">
 									<td class="menu-thumbnail-container">
-										<a href="doctor.html"><img border="0" src="thumbnails/designs.png" alt="Doctors" class="menu-thumbnail"></a>
+										<a href="doctor"><img border="0" src="thumbnails/designs.png" alt="Doctors" class="menu-thumbnail"></a>
 									</td>
 									
 									<td valign="middle" class="menu-text-container">
-										<a href="doctor.html" class="menu-text"><font size="5">Doctors</font></a>
+										<a href="doctor" class="menu-text"><font size="5">Doctors</font></a>
 									</td>
 								</tr>
 								
 								<tr class="menu-item">
 									<td class="menu-thumbnail-container">
-										<a href="clinic.html"><img border="0" src="thumbnails/other.jpg" alt="Clinics" class="menu-thumbnail"></a>
+										<a href="clinic"><img border="0" src="thumbnails/other.jpg" alt="Clinics" class="menu-thumbnail"></a>
 									</td>
 									
 									<td valign="middle" class="menu-text-container">
-										<a href="clinic.html" class="menu-text"><font size="5">Clinics</font></a>
+										<a href="clinic" class="menu-text"><font size="5">Clinics</font></a>
 									</td>
 								</tr>
 								
 								<tr class="menu-item">
 									<td class="menu-thumbnail-container">
-										<a href="patient_medication.html"><img border="0" src="thumbnails/fractals.jpg" alt="Patient-Medication" class="menu-thumbnail"></a>
+										<a href="patient_medication"><img border="0" src="thumbnails/fractals.jpg" alt="Patient-Medication" class="menu-thumbnail"></a>
 									</td>
 									
 									<td valign="middle" class="menu-text-container">
-										<a href="patient_medication.html" class="menu-text"><font size="5">Patient-Medication</font></a>
+										<a href="patient_medication" class="menu-text"><font size="5">Patient-Medication</font></a>
 									</td>
 								</tr>
 								
@@ -116,13 +121,13 @@
 							
 						</header>
 						
-        		<table class="data-container">
-        			<tbody>
-                <tr>
-						      {{{body}}}
-                </tr>
-              </tbody>
-            </table>
+						<table class="data-container">
+							<tbody>
+								<tr>
+									{{{body}}}
+								</tr>
+							</tbody>
+						</table>
 						
 					</td>
 				</tr>

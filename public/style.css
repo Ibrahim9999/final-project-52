@@ -8,7 +8,7 @@ table
 }
 
 th,
-td:not(.menu-thumbnail-container):not(.menu-text-container)
+td:not(.menu-thumbnail-container):not(.menu-text-container):not(.delete):not(.update)
 {
 	padding:5px;
 	border-style:solid;
@@ -22,7 +22,15 @@ div:not(.search-input-container)
 
 
 
+.delete
+{
+	padding-left: 10px;
+}
 
+.update
+{
+	padding-left: 5px;
+}
 
 table.data-container
 {
