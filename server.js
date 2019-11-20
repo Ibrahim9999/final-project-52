@@ -17,7 +17,7 @@ var app = express();
 app.use(express.static('public'));
 app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-app.set('port', process.argv[2]);
+app.set('port', process.argv[process.argv.length - 1]);
 
 
 var patientArray = JSON.parse(fs.readFileSync("patient.json"));
@@ -209,12 +209,12 @@ app.get('/patients_medications.html', function (req, res)
 
 app.use(function(req,res)
 {
-  res.status(404).res.render('404');
+  res.status(404).render('404');
 });
 app.use(function(err, req, res, next)
 {
   console.error(err.stack);
-  res.status(500).res.render('500');
+  res.status(500).render('500');
 });
 
 app.listen(app.get('port'), function(){
