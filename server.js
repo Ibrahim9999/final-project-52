@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.set('mysql', mysql);
-app.set('port', process.argv[2]);
+app.set('port', process.argv[process.argv.length - 1]);
 
 
 app.use('/patient', require('./patient.js'));
