@@ -27,7 +27,7 @@ DELETE FROM medication WHERE id = :id;
 
 #edit medication
 UPDATE medication
-SET name = :name, p_safe
+SET name = :name, p_safe = :p_safe
 WHERE ID = :ID;
 
 
@@ -57,7 +57,7 @@ VALUE(:ID, :address, :city, :state, :zip);
 
 #delete clinic
 DELETE FROM clinic WHERE id = :id
-#Update doctor's foreign C_ID after deletion
+#Update foreign C_ID of doctor after deletion
 UPDATE doctor
 SET C_ID = NULL
 WHERE C_ID = :ID;
