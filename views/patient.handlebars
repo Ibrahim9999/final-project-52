@@ -23,25 +23,26 @@
 		</tbody>
 	</table>
 	
-	<div align = "center">
-		<button type="button"><a href="new_patient.html"></a>New Patient</button>
-	</div>
-	  
-	<form action=".html" method="post">
-		<fieldset align = "center">
-			<label>Input SSN for Patient's Doctors: <input type="number" name="numerical_input"></label>
-			<br />
-			<input type="submit" value = "submit">
-		</fieldset>
+	<br/>
+	
+	<h3>Add new patients (fix formatting and error handling):</h3>
+	<form id="add-patient" action="/patient" method="post">
+		SSN: <input type="int" name="SSN"><br>
+		First name: <input type="text" name="first_name"><br>
+		Last name: <input type="text" name="last_name"><br>
+		Birthdate: <input type="date" name="birthdate"><br>
+		<!--
+		Homeworld: <select name="homeworld"> 
+			{{#each doctor}}
+				<option value="{{id}}">{{name}}</option>
+			{{/each}}
+		-->
+		</select>
+		<br>
+		<input type="submit" value="Submit">
 	</form>
-		
-	<form action=".html" method="post">
-		<fieldset align = "center">
-			<label>Input SSN for Patient's Prescribed Medications: <input type="number" name="numerical_input"></label>
-			<br />
-			<input type="submit" value = "submit">
-		</fieldset>
-	</form>
+	
+	<br/>
 	
 	<div align = "center">
 		<a href="patient_medication.html">Access Patients & Medications M:M</a>

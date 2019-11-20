@@ -24,7 +24,6 @@ app.set('port', process.argv[process.argv.length - 1]);
 
 app.use('/patient', require('./patient.js'));
 
-//var patientArray = JSON.parse(fs.readFileSync("patient.json"));
 var medicationArray = JSON.parse(fs.readFileSync("medication.json"));
 var doctorArray = JSON.parse(fs.readFileSync("doctor.json"));
 var clinicArray = JSON.parse(fs.readFileSync("clinic.json"));
@@ -45,15 +44,7 @@ app.get('/index.html', function (req, res)
 {
 	res.status(200).render('home');
 });
-/*
-app.get('/patient', function (req, res)
-{
-	res.status(200).render('patient',
-	{
-		patientArray: JSON.parse(fs.readFileSync("patient.json"))
-	});
-});
-*/
+
 app.get('/medication', function (req, res)
 {
 	res.status(200).render('medication',
