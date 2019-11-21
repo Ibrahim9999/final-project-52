@@ -27,7 +27,7 @@ app.use('/clinic', require('./clinic.js'));
 app.use('/medication', require('./medication.js'));
 app.use('/doctor', require('./doctor.js'));
 
-app.use('/patient_medication', require('./patient_medication.js'));
+//app.use('/patient_medication', require('./patient_medication.js'));
 
 var patient_medicationArray = JSON.parse(fs.readFileSync("patient_medication.json"));
 
