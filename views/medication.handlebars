@@ -7,36 +7,32 @@
 			<th>Pregnancy Safe</th>
 		<thead>
 		<tbody>
-			{{#each medicationArray}}
+			{{#each medication}}
 				
 				<tr class="medication-row">
-					<td>{{id}}</td>
+					<td>{{ID}}</td>
 					<td>{{name}}</td>
-					<td>{{psafe}}</td>
+					<td>{{p_safe}}</td>
+					<td class="delete"><button onclick="deleteMedication({{ID}})">Delete</button></td>
+					<td class="update"><a href="/medication/{{ID}}">Update</a></td>
 				</tr>
 				
 			{{/each}}
 		</tbody>
 	</table>
 	
-	<div align = "center">
-		<button type="button"><a href="new_medicine.html"></a>New Medicine</button>
-		<button type="button"><a href="edit_medicine.html"></a>Edit Medicine</button>
-		<button type="button"><a href="del_medicine.html"></a>Delete Medicine</button>
-	</div>
-
-	<form action=".html" method="post">
-		<fieldset align = "center">
-			
-			<label>Input Medication ID for Patients with Prescriptions: <input type="number" name="numerical_input"></label>
-			<br />
-			<input type="submit" value = "submit">
-			
-		</fieldset>
+	<br/>
+	
+	<h3>Add new medications (fix formatting and error handling):</h3>
+	<form id="add-medication" action="/medication" method="post">
+		Name: <input type="text" name="name"><br>
+		Pregnancy Safe (make this checkbox): <input type="int" name="p_safe"><br>
+		<br>
+		<input type="submit" value="Submit">
 	</form>
 	
 	<div align = "center">
-		<a href="patient_medication.html">Access Patients & Medications M:M</a>
+		<a href="/patient_medication">Access Patients & Medications M:M</a>
 	</div>
 
 </main>

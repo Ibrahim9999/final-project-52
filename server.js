@@ -23,10 +23,12 @@ app.set('port', process.argv[process.argv.length - 1]);
 
 
 app.use('/patient', require('./patient.js'));
+app.use('/clinic', require('./clinic.js'));
+app.use('/medication', require('./medication.js'));
+app.use('/doctor', require('./doctor.js'));
 
-var medicationArray = JSON.parse(fs.readFileSync("medication.json"));
-var doctorArray = JSON.parse(fs.readFileSync("doctor.json"));
-var clinicArray = JSON.parse(fs.readFileSync("clinic.json"));
+app.use('/patient_medication', require('./patient_medication.js'));
+
 var patient_medicationArray = JSON.parse(fs.readFileSync("patient_medication.json"));
 
 
@@ -44,31 +46,7 @@ app.get('/index.html', function (req, res)
 {
 	res.status(200).render('home');
 });
-
-app.get('/medication', function (req, res)
-{
-	res.status(200).render('medication',
-	{
-		medicationArray: JSON.parse(fs.readFileSync("medication.json"))
-	});
-});
-
-app.get('/doctor', function (req, res)
-{
-	res.status(200).render('doctor',
-	{
-		doctorArray: JSON.parse(fs.readFileSync("doctor.json"))
-	});
-});
-
-app.get('/clinic', function (req, res)
-{
-	res.status(200).render('clinic',
-	{
-		clinicArray: JSON.parse(fs.readFileSync("clinic.json"))
-	});
-});
-
+/**/
 app.get('/patient_medication', function (req, res)
 {
 	res.status(200).render('patient_medication',

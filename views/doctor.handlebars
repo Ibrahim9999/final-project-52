@@ -8,44 +8,30 @@
 			<th>Clinic ID</th>
 		<thead>
 		<tbody>
-			{{#each doctorArray}}
+			{{#each doctor}}
 				
 				<tr class="doctor-row">
-					<td>{{id}}</td>
-					<td>{{fname}}</td>
-					<td>{{lname}}</td>
-					<td>{{cid}}</td>
+					<td>{{ID}}</td>
+					<td>{{first_name}}</td>
+					<td>{{last_name}}</td>
+					<td>{{C_ID}}</td>
+					<td class="delete"><button onclick="deleteDoctor({{ID}})">Delete</button></td>
+					<td class="update"><a href="/doctor/{{ID}}">Update</a></td>
 				</tr>
 				
 			{{/each}}
 		</tbody>
 	</table>
 	
+	<br/>
 	
-	<div align = "center">
-		<button type="button"><a href="new_doctor.html"></a>New Doctor</button>
-		<button type="button"><a href="del_doctor.html"></a>Delete Doctor</button>
-		<button type="button"><a href="edit_doctor.html"></a>Edit Doctor</button>
-	</div>
-	  
-	<form action=".html" method="post">
-		<fieldset align = "center">
-			
-			<label>Input ID for Doctor's patients: <input type="number" name="numerical_input"></label>
-			<br />
-			<input type="submit" value = "submit">
-			
-		</fieldset>
-	</form>
-	
-	<form action=".html" method="post">
-		<fieldset align = "center">
-			
-			<label>Input ID for Prescribed Medications: <input type="number" name="numerical_input"></label>
-			<br />
-			<input type="submit" value = "submit">
-			
-		</fieldset>
+	<h3>Add new doctors (fix formatting and error handling):</h3>
+	<form id="add-doctor" action="/doctor" method="post">
+		First name: <input type="text" name="first_name"><br>
+		Last name: <input type="text" name="last_name"><br>
+		C_ID (make this a dropdown): <input type="int" name="C_ID"><br>
+		<br>
+		<input type="submit" value="Submit">
 	</form>
 	
 </main>
