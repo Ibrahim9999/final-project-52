@@ -1,0 +1,12 @@
+<main class="content">
+
+	<h1>Update {{doctor.first_name}} {{doctor.last_name}}:</h1>
+	
+	<form id="update-doctor" action="/doctor" method="post">
+		First name: <input type="text" name="first_name" value="{{doctor.first_name}}"><br>
+		Last name: <input type="text" name="last_name" value="{{doctor.last_name}}"><br>
+		Clinic ID (make dropdown): <input type="int" name="C_ID" value="{{doctor.C_ID}}"><br>
+	</form>
+	
+	<button onclick="updateDoctor({{doctor.ID}})">Update</button>
+</main>
