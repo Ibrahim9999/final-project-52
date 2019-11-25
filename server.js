@@ -22,10 +22,10 @@ app.set('mysql', mysql);
 app.set('port', process.argv[process.argv.length - 1]);
 
 
-app.use('/patient', require('./patient.js'));
-app.use('/clinic', require('./clinic.js'));
-app.use('/medication', require('./medication.js'));
-app.use('/doctor', require('./doctor.js'));
+app.use('/patient', require('./routes/patient.js'));
+app.use('/clinic', require('./routes/clinic.js'));
+app.use('/medication', require('./routes/medication.js'));
+app.use('/doctor', require('./routes/doctor.js'));
 
 //app.use('/patient_medication', require('./patient_medication.js'));
 
