@@ -87,7 +87,7 @@ module.exports = function()
 		 * VALUES
 		 * 		(?, ?, ?)
 		 */
-        var sql = "INSERT INTO doctor (first_name, last_name, C_ID) VALUES (?, ?, ?, ?)";
+        var sql = "INSERT INTO doctor (first_name, last_name, C_ID) VALUES (?, ?, ?)";
         var inserts = [req.body.first_name, req.body.last_name, req.body.C_ID];
 		
         sql = mysql.pool.query(sql, inserts, function(error, results, fields)

@@ -1,28 +1,30 @@
 {
-  "name": "final-project",
+  "name": "final-project-52",
   "version": "1.0.0",
-  "description": "need to get at least an 80% to maintain a B in this class.",
+  "description": "Final project for CS 340",
   "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "forever": "^1.0.0",
+    "mysql": "^2.17.1",
+    "node": "^13.3.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo \"Error: no build specified\" && exit 1",
-    "prestart": "npm run build"
+    "test": "echo \\\"Error: no test specified\\\" && exit 1\"",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lobrovir/Project_52"
+    "url": "git+https://github.com/Ibrahim9999/final-project-52.git"
   },
-  "author": "",
-  "license": "UNLICENSED",
+  "author": "Ibrahim Mahmoud, Ryan Lobrovich",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lobrovir/Project_52/issues"
+    "url": "https://github.com/Ibrahim9999/final-project-52/issues"
   },
-  "homepage": "https://github.com/lobrovir/Project_52#readme",
-  "dependencies": {
-    "body-parser": "^1.13.3",
-    "express": "^4.13.2",
-    "express-handlebars": "^2.0.1",
-    "express-session": "^1.11.3",
-    "mysql": "^2.8.0"
-  }
+  "homepage": "https://github.com/Ibrahim9999/final-project-52#readme"
 }
