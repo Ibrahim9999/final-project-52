@@ -97,7 +97,7 @@ module.exports = function()
 					error: JSON.stringify(error)
 				});
 			}
-			console.log(req.body.search_query);
+			
 			res.render('search',
 			{
 				title: "Results",
