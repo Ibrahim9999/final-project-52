@@ -3,7 +3,9 @@
 		<th>ID</th>
 		<th>First Name</th>
 		<th>Last Name</th>
-		<th>Clinic</th>
+		{{#if doctor.[0].name}}
+			<th>Clinic</th>
+		{{/if}}
 	<thead>
 	<tbody>
 		{{#each doctor}}
@@ -12,7 +14,9 @@
 				<td><a href="/doctor/{{ID}}">{{ID}}</a></td>
 				<td>{{first_name}}</td>
 				<td>{{last_name}}</td>
-				<td>{{name}}</td>
+				{{#if doctor.[0].name}}
+					<td>{{name}}</td>
+				{{/if}}
 			</tr>
 			
 		{{/each}}
