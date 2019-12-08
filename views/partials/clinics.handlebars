@@ -1,0 +1,18 @@
+<table id="clinic-table" align="center">
+	<thead>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Address</th>
+	<thead>
+	<tbody>
+		{{#each clinic}}
+			
+			<tr class="clinic-row">
+				<td><a href="/clinic/{{ID}}">{{ID}}</a></td>
+				<td>{{name}}</td>
+				<td>{{address}}, {{city}}, {{state}}, {{zip}}</td>
+			</tr>
+			
+		{{/each}}
+	</tbody>
+</table>

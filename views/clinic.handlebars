@@ -1,0 +1,18 @@
+<main class="content">
+
+	{{> clinics}}
+	
+	<br/>
+	
+	<h3>Add new clinics (fix formatting and error handling):</h3>
+	<form id="add-clinic" action="/clinic" method="post">
+		Name: <input type="text" name="name"><br>
+		Address: <input type="text" name="address"><br>
+		City: <input type="text" name="city"><br>
+		State (make this a dropdown): <input type="text" name="state"><br>
+		Zip Code: <input type="int" name="zip"><br>
+		<br>
+		<input type="submit" value="Submit">
+	</form>
+		
+</main>

@@ -1,0 +1,13 @@
+<h1>Update {{medication.name}}:</h1>
+
+<form id="update-medication" action="/medication" method="post">
+	Name: <input type="text" name="name" value="{{medication.name}}"><br>
+	Pregnancy Safe (make this checkbox): <input type="int" name="p_safe" value="{{medication.p_safe}}"><br>
+</form>
+
+<button onclick="updateMedication({{medication.ID}})">Update</button>
+
+</tr><br/><br/><h2>Prescriptions:</h2><tr>
+
+{{> prescriptions}}
+

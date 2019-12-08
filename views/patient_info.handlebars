@@ -1,0 +1,17 @@
+<form id="update-patient" action="/patient" method="post">
+	First name: <input type="text" name="first_name" value="{{patient.first_name}}"><br>
+	Last name: <input type="text" name="last_name" value="{{patient.last_name}}"><br>
+	<!--
+	Homeworld: <select name="homeworld" id="planet-selector"> 
+		{{#each planets}}
+			<option value="{{id}}">{{name}}</option>
+		{{/each}}
+	</select><br>
+	-->
+</form>
+
+<button onclick="updatePatient({{patient.SSN}})">Update</button>
+
+</tr><br/><br/><h2>Prescriptions:</h2><tr>
+
+{{> prescriptions}}

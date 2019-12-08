@@ -1,0 +1,18 @@
+<table id="medication-table" align="center">
+	<thead>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Pregnancy Safe</th>
+	<thead>
+	<tbody>
+		{{#each medication}}
+			
+			<tr class="medication-row">
+				<td><a href="/medication/{{ID}}">{{ID}}</a></td>
+				<td>{{name}}</td>
+				<td>{{p_safe}}</td>
+			</tr>
+			
+		{{/each}}
+	</tbody>
+</table>

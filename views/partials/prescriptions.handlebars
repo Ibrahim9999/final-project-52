@@ -1,0 +1,41 @@
+<table id="prescription-table">
+	<thead>
+			<th>ID</th>
+			<th>Date Issued</th>
+			{{#if prescription.[0].clinic_name}}
+				<th>Clinic</th>
+			{{/if}}
+			{{#if prescription.[0].doctor_first_name}}
+				<th>Doctor</th>
+			{{/if}}
+			{{#if prescription.[0].first_name}}
+				<th>Patient</th>
+			{{/if}}
+			{{#if prescription.[0].name}}
+				<th>Medication</th>
+			{{/if}}
+	<thead>
+	
+	<tbody>
+		{{#each prescription}}
+			
+			<tr class="prescription-row">
+				<td>{{pID}}</td>
+				<td>{{issue_date}}</td>
+				{{#if clinic_name}}
+					<td><a href="/clinic/{{cID}}">{{clinic_name}}</a></td>
+				{{/if}}
+				{{#if doctor_first_name}}
+					<td><a href="/doctor/{{dID}}">{{doctor_first_name}} {{doctor_last_name}}</a></td>
+				{{/if}}
+				{{#if first_name}}
+					<td>{{first_name}} {{last_name}} <a href="/patient/{{SSN}}">({{SSN}})</a></td>
+				{{/if}}
+				{{#if name}}
+					<td><a href="/medication/{{ID}}">{{name}}</a></td>
+				{{/if}}
+			</tr>
+			
+		{{/each}}
+	</tbody>
+</table>

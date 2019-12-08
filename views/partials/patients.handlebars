@@ -1,0 +1,21 @@
+<table id="patient-table">
+	<thead>
+		<th>SSN</th>
+		<th>First Name</th>
+		<th>Last Name</th>
+		<th>Birthdate</th>
+	<thead>
+	
+	<tbody>
+		{{#each patient}}
+			
+			<tr class="patient-row">
+				<td><a href="/patient/{{SSN}}">{{SSN}}</a></td>
+				<td>{{first_name}}</td>
+				<td>{{last_name}}</td>
+				<td>{{birthdate}}</td>
+			</tr>
+			
+		{{/each}}
+	</tbody>
+</table>
