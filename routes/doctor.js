@@ -16,7 +16,7 @@ module.exports = function()
 		 * INNER JOIN clinic ON doctor.C_ID = clinic.ID
 		 * ORDER BY doctor.ID ASC;
 		 */
-		req.app.get('mysql').pool.query("SELECT doctor.ID, first_name, last_name, clinic.name FROM doctor INNER JOIN clinic ON doctor.C_ID = clinic.ID ORDER BY doctor.ID ASC;", function(error, results, fields)
+		req.app.get('mysql').pool.query("SELECT doctor.ID, first_name, last_name, name FROM doctor INNER JOIN clinic ON doctor.C_ID = clinic.ID ORDER BY doctor.ID ASC;", function(error, results, fields)
 		{
             if(error)
 			{
