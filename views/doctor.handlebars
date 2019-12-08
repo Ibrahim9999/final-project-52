@@ -1,27 +1,6 @@
 <main class="content">
 
-	<table id="doctor-table" align="center">
-		<thead>
-			<th>ID</th>
-			<th>First Name</th>
-			<th>Last Name</th>
-			<th>Clinic ID</th>
-		<thead>
-		<tbody>
-			{{#each doctor}}
-				
-				<tr class="doctor-row">
-					<td>{{ID}}</td>
-					<td>{{first_name}}</td>
-					<td>{{last_name}}</td>
-					<td>{{C_ID}}</td>
-					<td class="delete"><button onclick="deleteDoctor({{ID}})">Delete</button></td>
-					<td class="update"><a href="/doctor/{{ID}}">Update</a></td>
-				</tr>
-				
-			{{/each}}
-		</tbody>
-	</table>
+	{{> doctors}}
 	
 	<br/>
 	
@@ -33,5 +12,7 @@
 		<br>
 		<input type="submit" value="Submit">
 	</form>
+	
+	<br/>
 	
 </main>

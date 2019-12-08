@@ -3,98 +3,55 @@ module.exports = function()
     var express = require('express');
     var router = express.Router();
 	
-	/* Gets a single medication based on ID */
-	function getMedication(res, mysql, context, ID, complete)
-	{
-		/* SELECT
-		 * 		ID,
-		 *		name,
-		 *		p_safe
-		 * FROM
-		 * 		medication
-		 * WHERE
-		 *		ID = ?
-		 */
-		var sql = "SELECT ID, name, p_safe FROM medication WHERE ID = ?";
-        var inserts = [ID];
-		
-		mysql.pool.query(sql, inserts, function(error, results, fields)
-		{
-			if(error)
-			{
-				res.write(JSON.stringify(error));
-				res.end();
-			}
-			
-			context.medication = results[0];
-			complete();
-		});
-    }
-	
-	/* Gets all medications */
-	function getMedications(res, mysql, context, complete)
-	{
-		/* SELECT
-		 * 		ID,
-		 *		name,
-		 *		p_safe
-		 * FROM
-		 * 		medication
-		 */
-		mysql.pool.query("SELECT ID, name, p_safe FROM medication", function(error, results, fields)
-		{
-            if(error)
-			{
-                res.write(JSON.stringify(error));
-                res.end();
-            }
-			
-            context.medication = results;
-            complete();
-        });
-    }
-	
 	/* Display all medications */
 	router.get('/', function(req, res)
 	{
-		var callbackCount = 0;
-		var context = {};
-		context.jsscripts = ["deleteMedication.js"];
-		var mysql = req.app.get('mysql');
-		
-		getMedications(res, mysql, context, complete);
-		
-		function complete()
+		/* SELECT
+		 * 		ID,
+		 *		name,
+		 *		CASE WHEN p_safe = 1 THEN 'Yes' ELSE 'No' END AS p_safe
+		 * FROM
+		 * 		medication
+		 */
+		req.app.get('mysql').pool.query("SELECT ID, name, CASE WHEN p_safe = 1 THEN 'Yes' ELSE 'No' END AS p_safe FROM medication", function(error, results, fields)
 		{
-			callbackCount++;
-			
-			if(callbackCount >= 1)
+            if(error)
 			{
-				res.render('medication', context);
-			}
-		}
+                console.log(JSON.stringify(error));
+                res.write(JSON.stringify(error));
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
+            }
+			
+            res.render('medication',
+			{
+				title: "Medications",
+				jsscripts: ["deleteMedication.js"],
+				medication: results
+			});
+        });
     });
 	
 	/* Creates a new medication */
     router.post('/', function(req, res)
 	{
-        var mysql = req.app.get('mysql');
-		
-		/* INSERT INTO medication
+        /* INSERT INTO medication
 		 * 		(name, p_safe)
 		 * VALUES
 		 * 		(?, ?)
 		 */
-        var sql = "INSERT INTO medication (name, p_safe) VALUES (?, ?)";
-        var inserts = [req.body.name, req.body.p_safe];
-		
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields)
+        req.app.get('mysql').pool.query("INSERT INTO medication (name, p_safe) VALUES (?, ?)", [req.body.name, req.body.p_safe], function(error, results, fields)
 		{
             if(error)
 			{
-                console.log(JSON.stringify(error))
+                console.log(JSON.stringify(error));
                 res.write(JSON.stringify(error));
-                res.end();
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
             }
 			else
 			{
@@ -106,33 +63,58 @@ module.exports = function()
 	/* Displays page for updating a medication based on id */
     router.get('/:ID', function(req, res)
 	{
-        callbackCount = 0;
-        var context = {};
-        context.jsscripts = ["updateMedication.js"];
-        var mysql = req.app.get('mysql');
-		
-        getMedication(res, mysql, context, req.params.ID, complete);
-		
-        function complete()
+        /* SELECT
+		 * 		ID,
+		 *		name,
+		 *		p_safe
+		 * FROM
+		 * 		medication
+		 * WHERE
+		 *		ID = ?;
+		 *
+		 *
+		 *
+		 * SELECT
+		 * 		prescription.ID AS pID,
+		 * 		DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date,
+		 * 		clinic.name AS clinic_name,
+		 * 		clinic.ID AS cID,
+		 * 		doctor.first_name AS doctor_first_name,
+		 * 		doctor.last_name AS doctor_last_name,
+		 * 		doctor.ID AS dID,
+		 * 		patient.first_name,
+		 * 		patient.last_name,
+		 * 		patient.SSN
+		 * FROM
+		 * 		prescription
+		 * INNER JOIN	medication	ON prescription.MED_ID	= medication.ID
+		 * INNER JOIN	patient		ON prescription.PAT_SSN	= patient.SSN
+		 * INNER JOIN	doctor		ON prescription.DOC_ID	= doctor.ID
+		 * INNER JOIN	clinic		ON doctor.C_ID = clinic.ID
+		 * WHERE medication.ID = ?
+		 * ORDER BY prescription.issue_date DESC;
+		 */
+		req.app.get('mysql').pool.query("SELECT ID, name, p_safe FROM medication WHERE ID = ?; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, clinic.name AS clinic_name, clinic.ID AS cID, doctor.first_name AS doctor_first_name, doctor.last_name AS doctor_last_name, doctor.ID AS dID, patient.first_name, patient.last_name, patient.SSN FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN patient ON prescription.PAT_SSN = patient.SSN INNER JOIN doctor ON prescription.DOC_ID = doctor.ID INNER JOIN clinic ON doctor.C_ID = clinic.ID WHERE medication.ID = ? ORDER BY prescription.issue_date DESC;", [req.params.ID, req.params.ID], function(error, results, fields)
 		{
-            callbackCount++;
-			
-            if(callbackCount >= 1)
+			if(error)
 			{
-                res.render('update_medication', context);
-            }
-
-        }
+				res.write(JSON.stringify(error));
+				res.end();
+			}
+			
+			res.render('medication_info',
+			{
+				title: results[0][0].name,
+				jsscripts: ["updateMedication.js"],
+				medication: results[0][0],
+				prescription: results[1]
+			});
+		});
     });
 	
 	/* Updates a medication based on id */
 	router.put('/:ID', function(req, res)
 	{
-        var mysql = req.app.get('mysql');
-		
-        console.log(req.body)
-        console.log(req.params.ID)
-		
         /* UPDATE
 		 * 		medication
 		 * SET
@@ -141,21 +123,20 @@ module.exports = function()
 		 * WHERE
 		 * 		ID = ?
 		 */
-		var sql = "UPDATE medication SET name = ?, p_safe = ? WHERE ID = ?";
-        var inserts = [req.body.name, req.body.p_safe, req.params.ID];
-		
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields)
+		req.app.get('mysql').pool.query("UPDATE medication SET name = ?, p_safe = ? WHERE ID = ?", [req.body.name, req.body.p_safe, req.params.ID], function(error, results, fields)
 		{
             if(error)
 			{
-                console.log(error)
+                console.log(JSON.stringify(error));
                 res.write(JSON.stringify(error));
-                res.end();
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
             }
 			else
 			{
-                res.status(200);
-                res.end();
+                res.status(200).end();
             }
         });
     });
@@ -163,24 +144,21 @@ module.exports = function()
 	/* Delete a medication based on id */
     router.delete('/:ID', function(req, res)
 	{
-        var mysql = req.app.get('mysql');
-		
-		/* DELETE FROM
+        /* DELETE FROM
 		 * 		medication
 		 * WHERE
 		 * 		ID = ?
 		 */
-		var sql = "DELETE FROM medication WHERE ID = ?";
-        var inserts = [req.params.ID];
-		
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields)
+		req.app.get('mysql').pool.query("DELETE FROM medication WHERE ID = ?", [req.params.ID], function(error, results, fields)
 		{
             if(error)
 			{
-                console.log(error)
+                console.log(JSON.stringify(error));
                 res.write(JSON.stringify(error));
-                res.status(400);
-                res.end();
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
             }
 			else
 			{

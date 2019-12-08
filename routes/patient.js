@@ -3,139 +3,122 @@ module.exports = function()
     var express = require('express');
     var router = express.Router();
 	
-	/* Gets a single patient based on SSN */
-	function getPatient(res, mysql, context, SSN, complete)
-	{
-		/* SELECT
-		 * 		SSN,
-		 *		first_name,
-		 *		last_name,
-		 *		birthdate
-		 * FROM
-		 * 		patient
-		 * WHERE
-		 *		SSN = ?
-		 */
-		var sql = "SELECT SSN, first_name, last_name, birthdate FROM patient WHERE SSN = ?";
-        var inserts = [SSN];
-		
-		mysql.pool.query(sql, inserts, function(error, results, fields)
-		{
-			if(error)
-			{
-				res.write(JSON.stringify(error));
-				res.end();
-			}
-			
-			context.patient = results[0];
-			complete();
-		});
-    }
-	
-	/* Gets all patients */
-	function getPatients(res, mysql, context, complete)
-	{
-		/* SELECT
-		 * 		SSN,
-		 *		first_name,
-		 *		last_name,
-		 *		CONVERT(birthdate, char) # This doesn't work!
-		 * FROM
-		 * 		patient
-		 */
-		mysql.pool.query("SELECT SSN, first_name, last_name, birthdate FROM patient", function(error, results, fields)
-		{
-            if(error)
-			{
-                res.write(JSON.stringify(error));
-                res.end();
-            }
-			
-            context.patient = results;
-            complete();
-        });
-    }
-	
 	/* Display all patients */
 	router.get('/', function(req, res)
 	{
-		var callbackCount = 0;
-		var context = {};
-		context.jsscripts = ["deletePatient.js"];
-		var mysql = req.app.get('mysql');
-		
-		getPatients(res, mysql, context, complete);
-		
-		function complete()
+		/* SELECT
+		 * 		SSN,
+		 *		first_name,
+		 *		last_name,
+		 *		DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate
+		 * FROM
+		 * 		patient
+		 */
+		req.app.get('mysql').pool.query("SELECT SSN, first_name, last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate FROM patient", function(error, results, fields)
 		{
-			callbackCount++;
-			
-			if(callbackCount >= 1)
+            if(error)
 			{
-				res.render('patient', context);
-			}
-		}
+				console.log(JSON.stringify(error));
+                res.write(JSON.stringify(error));
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
+            }
+			
+            res.render('patient',
+			{
+				title: "Patients",
+				jsscripts: ["deletePatient.js"],
+				patient: results
+			});
+        });
     });
 	
-	/* Creates a new patient */
+	/* Inserts a new patient */
     router.post('/', function(req, res)
 	{
-        var mysql = req.app.get('mysql');
-		
-		/* INSERT INTO patient
+        /* INSERT INTO patient
 		 * 		(SSN, first_name, last_name, birthdate)
 		 * VALUES
 		 * 		(?, ?, ?, ?)
 		 */
-        var sql = "INSERT INTO patient (SSN, first_name, last_name, birthdate) VALUES (?, ?, ?, ?)";
-        var inserts = [req.body.SSN, req.body.first_name, req.body.last_name, req.body.birthdate];
-		
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields)
+        req.app.get('mysql').pool.query("INSERT INTO patient (SSN, first_name, last_name, birthdate) VALUES (?, ?, ?, ?)", [req.body.SSN, req.body.first_name, req.body.last_name, req.body.birthdate], function(error, results, fields)
 		{
             if(error)
 			{
-                console.log(JSON.stringify(error))
+                console.log(JSON.stringify(error));
                 res.write(JSON.stringify(error));
-                res.end();
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
             }
-			else
-			{
-                res.redirect('/patient');
-            }
+			
+			res.redirect('/patient');
         });
+		
     });
 	
-	/* Displays page for updating a patient based on ssn */
+	/* Displays page for accessig patient info on ssn */
     router.get('/:SSN', function(req, res)
 	{
-        callbackCount = 0;
-        var context = {};
-        context.jsscripts = ["updatePatient.js"];
-        var mysql = req.app.get('mysql');
-		
-        getPatient(res, mysql, context, req.params.SSN, complete);
-		
-        function complete()
+		/* SELECT
+		 * 		SSN,
+		 *		first_name,
+		 *		last_name,
+		 *		DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate
+		 * FROM
+		 * 		patient
+		 * WHERE
+		 *		SSN = ?;
+		 *
+		 *
+		 *
+		 * SELECT
+		 * 		prescription.ID AS pID,
+		 * 		DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date,
+		 * 		clinic.name AS clinic_name,
+		 * 		clinic.ID AS cID,
+		 * 		doctor.first_name AS doctor_first_name,
+		 * 		doctor.last_name AS doctor_last_name,
+		 * 		doctor.ID AS dID,
+		 * 		medication.name,
+		 * 		medication.ID
+		 * FROM
+		 * 		prescription
+		 * INNER JOIN	medication	ON prescription.MED_ID	= medication.ID
+		 * INNER JOIN	doctor		ON prescription.DOC_ID	= doctor.ID
+		 * INNER JOIN	clinic		ON doctor.C_ID = clinic.ID
+		 * WHERE prescription.PAT_SSN = ?
+		 * ORDER BY prescription.issue_date DESC;
+		 */
+		req.app.get('mysql').pool.query("SELECT SSN, first_name, last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate FROM patient WHERE SSN = ?; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, clinic.name AS clinic_name, clinic.ID AS cID, doctor.first_name AS doctor_first_name, doctor.last_name AS doctor_last_name, doctor.ID AS dID, medication.name, medication.ID FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN doctor ON prescription.DOC_ID = doctor.ID INNER JOIN clinic ON doctor.C_ID = clinic.ID WHERE prescription.PAT_SSN = ? ORDER BY prescription.issue_date DESC;", [req.params.SSN, req.params.SSN], function(error, results, fields)
 		{
-            callbackCount++;
-			
-            if(callbackCount >= 1)
+			if(error)
 			{
-                res.render('update_patient', context);
-            }
-
-        }
+				console.log(JSON.stringify(error));
+                res.write(JSON.stringify(error));
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
+			}
+			
+			res.render('patient_info',
+			{
+				title: results[0][0].first_name + " " + results[0][0].last_name + " (" + results[0][0].SSN + ")",
+				jsscripts: ["updatePatient.js"],
+				patient: results[0][0],
+				prescription: results[1]
+			});
+		});
     });
 	
 	/* Updates a patient based on ssn */
 	router.put('/:SSN', function(req, res)
 	{
-        var mysql = req.app.get('mysql');
-		
-        console.log(req.body)
-        console.log(req.params.SSN)
-		
-        /* UPDATE
+		/* UPDATE
 		 *  	patient
 		 * SET
 		 *		first_name = ?,
@@ -143,51 +126,43 @@ module.exports = function()
 		 * WHERE
 		 * 		SSN = ?
 		 */
-		var sql = "UPDATE patient SET first_name = ?, last_name = ? WHERE SSN = ?";
-        var inserts = [req.body.first_name, req.body.last_name, req.params.SSN];
-		
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields)
+		req.app.get('mysql').pool.query("UPDATE patient SET first_name = ?, last_name = ? WHERE SSN = ?", [req.body.first_name, req.body.last_name, req.params.SSN], function(error, results, fields)
 		{
             if(error)
 			{
-                console.log(error)
+                console.log(JSON.stringify(error));
                 res.write(JSON.stringify(error));
-                res.end();
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
             }
-			else
-			{
-                res.status(200);
-                res.end();
-            }
+			
+			res.status(200).end();
         });
     });
 	
 	/* Delete a patient based on ssn */
     router.delete('/:SSN', function(req, res)
 	{
-        var mysql = req.app.get('mysql');
-		
-		/* DELETE FROM
+        /* DELETE FROM
 		 * 		patient
 		 * WHERE
 		 * 		SSN = ?
 		 */
-		var sql = "DELETE FROM patient WHERE SSN = ?";
-        var inserts = [req.params.SSN];
-		
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields)
+		req.app.get('mysql').pool.query("DELETE FROM patient WHERE SSN = ?", [req.params.SSN], function(error, results, fields)
 		{
             if(error)
 			{
-                console.log(error)
+                console.log(JSON.stringify(error));
                 res.write(JSON.stringify(error));
-                res.status(400);
-                res.end();
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
             }
-			else
-			{
-                res.status(202).end();
-            }
+			
+			res.status(202).end();
         });
     });
 	

@@ -12,7 +12,6 @@ var bodyParser = require('body-parser');
 var mysql = require('./dbcon.js');
 var app = express();
 
-
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
@@ -24,21 +23,16 @@ app.set('port', process.argv[process.argv.length - 1]);
 app.use('/patient', require('./routes/patient.js'));
 app.use('/medication', require('./routes/medication.js'));
 app.use('/doctor', require('./routes/doctor.js'));
+app.use('/clinic', require('./routes/clinic.js'));
+app.use('/search', require('./routes/search.js'));
 
 
 app.get('/', function (req, res)
 {
-	res.status(200).render('home');
-});
-
-app.get('/home', function (req, res)
-{
-	res.status(200).render('home');
-});
-
-app.get('/index.html', function (req, res)
-{
-	res.status(200).render('home');
+	res.status(200).render('home',
+	{
+		title: "Pharmacy Database"
+	});
 });
 
 app.use(function(req,res)

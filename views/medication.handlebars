@@ -1,25 +1,6 @@
 <main class="content">
 
-	<table id="medication-table" align="center">
-		<thead>
-			<th>ID</th>
-			<th>Name</th>
-			<th>Pregnancy Safe</th>
-		<thead>
-		<tbody>
-			{{#each medication}}
-				
-				<tr class="medication-row">
-					<td>{{ID}}</td>
-					<td>{{name}}</td>
-					<td>{{p_safe}}</td>
-					<td class="delete"><button onclick="deleteMedication({{ID}})">Delete</button></td>
-					<td class="update"><a href="/medication/{{ID}}">Update</a></td>
-				</tr>
-				
-			{{/each}}
-		</tbody>
-	</table>
+	{{> medications}}
 	
 	<br/>
 	
@@ -31,8 +12,6 @@
 		<input type="submit" value="Submit">
 	</form>
 	
-	<div align = "center">
-		<a href="/patient_medication">Access Patients & Medications M:M</a>
-	</div>
+	<br/>
 
 </main>

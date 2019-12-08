@@ -2,7 +2,6 @@ table
 {
 	text-align: center;
 	border-style:1px solid;
-	padding: 5px;
 	margin: auto;
 	table-layout: fixed;
 }
@@ -82,7 +81,8 @@ a:hover
 	text-decoration: underline;
 }
 
-.content {
+.content
+ {
 	display: flex;
 }
 
@@ -103,6 +103,7 @@ a:hover
 {
 	width: 95%;
 	margin: 20px 0;
+	margin-bottom: 0px;
 	align-items: center;
 	display: flex;
 	align-items: center;
@@ -112,7 +113,7 @@ a:hover
 {
 	font-size: 14px;
 	flex: 1 auto;
-	width: 33%;
+	width: 95%;
 	margin-left: 1px;
 	padding: 3px;
 	border: 1px solid #dadada;
@@ -124,6 +125,7 @@ a:hover
 	font-size: 16px;
 	color: white;
 	padding: 5px;
+	margin: 10px;
 	background-color: #000;
 	border: 1px solid #ababab;
 	border-radius: 5px;

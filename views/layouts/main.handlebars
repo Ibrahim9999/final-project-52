@@ -31,10 +31,11 @@
 							<b><font size="6" color="#3af2f9">Menu</font></b>
 							
 							<div class="search-input-container">
-								  <input type="text" placeholder="Search..." name="search-text" id="search-text" class="search-input">
+								<form method="post" action="/search">
+									<input type="text" class="search-input" name="search_query" placeholder="Search Prescriptions...">
+									<button class="action-button" id="search-button">Search</button>
+								</form>
 							</div>
-
-							<button id="search-button" class="action-button">Search</button>
 						</center>
 						
 						<hr>
@@ -47,7 +48,7 @@
 									</td>
 									
 									<td valign="middle" class="menu-text-container">
-										<a href="/index.html" class="menu-text"><font size="5">Home</font></a>
+										<a href="/" class="menu-text"><font size="5">Home</font></a>
 									</td>
 								</tr>
 								
@@ -63,11 +64,11 @@
 								
 								<tr class="menu-item">
 									<td class="menu-thumbnail-container">
-										<a href="/medication"><img border="0" src="/thumbnails/fractals.jpg" alt="Medication" class="menu-thumbnail"></a>
+										<a href="/medication"><img border="0" src="/thumbnails/fractals.jpg" alt="Medications" class="menu-thumbnail"></a>
 									</td>
 									
 									<td valign="middle" class="menu-text-container">
-										<a href="/medication" class="menu-text"><font size="5">Medication</font></a>
+										<a href="/medication" class="menu-text"><font size="5">Medications</font></a>
 									</td>
 								</tr>
 								
@@ -78,6 +79,16 @@
 									
 									<td valign="middle" class="menu-text-container">
 										<a href="/doctor" class="menu-text"><font size="5">Doctors</font></a>
+									</td>
+								</tr>
+								
+								<tr class="menu-item">
+									<td class="menu-thumbnail-container">
+										<a href="/clinic"><img border="0" src="/thumbnails/designs.png" alt="Clinics" class="menu-thumbnail"></a>
+									</td>
+									
+									<td valign="middle" class="menu-text-container">
+										<a href="/clinic" class="menu-text"><font size="5">Clinics</font></a>
 									</td>
 								</tr>
 								
@@ -95,7 +106,7 @@
 										
 						<header>
 							
-							<h1 class="site-title"><a href="https://github.com/Ibrahim9999/final-project-52">Pharmacy Database</a></h1>
+							<h1 class="site-title"><a href="https://github.com/Ibrahim9999/final-project-52">{{title}}</a></h1>
 							<br>
 							
 						</header>
@@ -104,6 +115,8 @@
 							<tbody>
 								<tr>
 									{{{body}}}
+									<br/>
+									<br/>
 								</tr>
 							</tbody>
 						</table>
