@@ -4,11 +4,41 @@
 	Clinic ID (make dropdown): <input type="int" name="C_ID" value="{{doctor.C_ID}}"><br>
 </form>
 
+<br/>
 <button onclick="updateDoctor({{doctor.ID}})">Update</button>
 
 </tr><br/><br/><h2>Patients:</h2><tr>
 
 {{> patients}}
+
+<br/><br/>
+
+<h3>Add New Patient:</h3>
+
+<form id="add-new-patient" action="/doctor/add-new-patient" method="post">
+	Social Security Number: <input type="number" name="SSN"><br>
+	First name: <input type="text" name="patient_first_name"><br>
+	Last name: <input type="text" name="patient_last_name"><br>
+	Birthdate: <input type="date" name="birthdate"><br>
+</form>
+
+<br/>
+<button onclick="addNewPatient({{doctor.ID}})">Insert</button>
+
+<br/><br/>
+
+<h3>Add Existing Patient: </h3>
+
+<form id="add-existing-patient" action="/doctor/add-existing-patient" method="post">
+	<select name="SSN" id="patient-selector"> 
+		{{#each not_patient}}
+			<option value="{{SSN}}">{{first_name}} {{last_name}} ({{SSN}})</option>
+		{{/each}}
+	</select>
+</form>
+
+<br/>
+<button onclick="addExistingPatient({{doctor.ID}})">Insert</button>
 
 <br/><br/><h2>Prescriptions:</h2>
 

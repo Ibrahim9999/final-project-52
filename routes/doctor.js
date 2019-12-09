@@ -39,7 +39,7 @@ module.exports = function()
 		
     });
 	
-	/* Creates a new doctor */
+	/* Inserts a new doctor */
     router.post('/', function(req, res)
 	{
         /* INSERT INTO doctor
@@ -80,17 +80,36 @@ module.exports = function()
 		 *
 		 *
 		 *
-		 * SELECT DISTINCT
+		 * SELECT
 		 * 		SSN,
 		 *		patient.first_name,
 		 *		patient.last_name,
-		 *		DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate
+		 *		DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate,
+		 * 		DOC_ID
 		 * FROM
 		 * 		patient
-		 * INNER JOIN prescription	ON patient.SSN			= prescription.PAT_SSN
-		 * INNER JOIN doctor		ON prescription.DOC_ID	= doctor.ID
-		 * WHERE doctor.ID = ?
+		 * INNER JOIN patient_doctor ON patient.SSN = patient_doctor.PAT_SSN
+		 * WHERE patient_doctor.DOC_ID = ?
 		 * ORDER BY patient.SSN ASC;
+		 *
+		 *
+		 *
+		 * SELECT DISTINCT
+		 *		SSN,
+		 *		patient.first_name,
+		 *		patient.last_name
+		 * FROM
+		 *		patient
+		 * WHERE NOT EXISTS
+		 * (
+		 *		SELECT
+		 *			*
+		 *		FROM
+		 *			patient_doctor
+		 *		WHERE
+		 *			patient_doctor.PAT_SSN = patient.SSN AND patient_doctor.DOC_ID = '1'
+		 * )
+		 * ORDER BY patient.first_name ASC
 		 *
 		 *
 		 *
@@ -113,7 +132,7 @@ module.exports = function()
 		 * WHERE prescription.DOC_ID = ?
 		 * ORDER BY prescription.issue_date DESC;
 		 */
-		req.app.get('mysql').pool.query("SELECT ID, first_name, last_name, C_ID FROM doctor WHERE ID = ?; SELECT DISTINCT SSN, patient.first_name, patient.last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate FROM patient INNER JOIN prescription ON patient.SSN = prescription.PAT_SSN INNER JOIN doctor ON prescription.DOC_ID = doctor.ID WHERE doctor.ID = ? ORDER BY patient.SSN ASC; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, clinic.name AS clinic_name, clinic.ID AS cID, patient.first_name, patient.last_name, patient.SSN, medication.name, medication.ID FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN patient ON prescription.PAT_SSN = patient.SSN INNER JOIN doctor ON prescription.DOC_ID = doctor.ID INNER JOIN clinic ON doctor.C_ID = clinic.ID WHERE prescription.DOC_ID = ? ORDER BY prescription.issue_date DESC;", [req.params.ID, req.params.ID, req.params.ID], function(error, results, fields)
+		req.app.get('mysql').pool.query("SELECT ID, first_name, last_name, C_ID FROM doctor WHERE ID = ?; SELECT SSN, patient.first_name, patient.last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate, DOC_ID FROM patient INNER JOIN patient_doctor ON patient.SSN = patient_doctor.PAT_SSN WHERE patient_doctor.DOC_ID = ? ORDER BY patient.SSN ASC; SELECT DISTINCT SSN, patient.first_name, patient.last_name FROM patient WHERE NOT EXISTS (SELECT * FROM patient_doctor WHERE patient_doctor.PAT_SSN = patient.SSN AND patient_doctor.DOC_ID = ?) ORDER BY patient.first_name ASC; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, clinic.name AS clinic_name, clinic.ID AS cID, patient.first_name, patient.last_name, patient.SSN, medication.name, medication.ID FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN patient ON prescription.PAT_SSN = patient.SSN INNER JOIN doctor ON prescription.DOC_ID = doctor.ID INNER JOIN clinic ON doctor.C_ID = clinic.ID WHERE prescription.DOC_ID = ? ORDER BY prescription.issue_date DESC;", [req.params.ID, req.params.ID, req.params.ID, req.params.ID], function(error, results, fields)
 		{
 			if(error)
 			{
@@ -128,12 +147,72 @@ module.exports = function()
 			res.render('doctor_info',
 			{
 				title: results[0][0].first_name + " " + results[0][0].last_name,
-				jsscripts: ["updateDoctor.js"],
+				jsscripts: ["updateDoctor.js", "addPatient.js", "deletePatient_Doctor.js"],
 				doctor: results[0][0],
 				patient: results[1],
-				prescription: results[2]
+				not_patient: results[2],
+				prescription: results[3]
 			});
 		});
+    });
+	
+	/* Inserts a new patient based on doctor's ID */
+    router.post('/add-new-patient/:ID', function(req, res)
+	{
+        /* INSERT INTO patient
+		 * 		(SSN, first_name, last_name, birthdate)
+		 * VALUES
+		 * 		(?, ?, ?, ?);
+		 * 
+		 * 
+		 * 
+		 * INSERT INTO patient_doctor
+		 * 		(PAT_SSN, DOC_ID)
+		 * 	VALUES
+		 * 		(?, ?);
+		 */
+        req.app.get('mysql').pool.query("INSERT INTO patient (SSN, first_name, last_name, birthdate) VALUES (?, ?, ?, ?); INSERT INTO patient_doctor (PAT_SSN, DOC_ID) VALUES (?, ?);", [req.body.SSN, req.body.patient_first_name, req.body.patient_last_name, req.body.birthdate, req.body.SSN, req.params.ID], function(error, results, fields)
+		{
+            if(error)
+			{
+				console.log(JSON.stringify(error));
+                res.write(JSON.stringify(error));
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
+            }
+			else
+			{
+                res.redirect('/doctor/' + req.params.ID);
+            }
+        });
+    });
+	
+	/* Inserts a existing patient based on doctor's ID */
+    router.post('/add-existing-patient/:ID', function(req, res)
+	{
+        /* INSERT INTO patient_doctor
+		 * 		(PAT_SSN, DOC_ID)
+		 * 	VALUES
+		 * 		(?, ?);
+		 */
+        req.app.get('mysql').pool.query("INSERT INTO patient_doctor (PAT_SSN, DOC_ID) VALUES (?, ?);", [req.body.SSN, req.params.ID], function(error, results, fields)
+		{
+            if(error)
+			{
+				console.log(JSON.stringify(error));
+                res.write(JSON.stringify(error));
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
+            }
+			else
+			{
+                res.redirect(303, '/doctor/' + req.params.ID);
+            }
+        });
     });
 	
 	/* Updates a doctor based on id */
@@ -149,7 +228,7 @@ module.exports = function()
 		 * 		ID = ?
 		 */
 		req.app.get('mysql').pool.query("UPDATE doctor SET first_name = ?, last_name = ?, C_ID = ? WHERE ID = ?", [req.body.first_name, req.body.last_name, req.body.C_ID, req.params.ID], function(error, results, fields)
-		{
+		{console.log("HERE");
             if(error)
 			{
                 console.log(JSON.stringify(error));
@@ -167,14 +246,14 @@ module.exports = function()
     });
 	
 	/* Delete a doctor based on id */
-    router.delete('/:ID', function(req, res)
+    router.delete('/deletePatient_Doctor/:PAT_SSN/:DOC_ID', function(req, res)
 	{
         /* DELETE FROM
-		 * 		doctor
+		 * 		patient_doctor
 		 * WHERE
-		 * 		ID = ?
+		 * 		PAT_SSN = ? AND DOC_ID = ?
 		 */
-		req.app.get('mysql').pool.query("DELETE FROM doctor WHERE ID = ?", [req.params.ID], function(error, results, fields)
+		req.app.get('mysql').pool.query("DELETE FROM patient_doctor WHERE PAT_SSN = ? AND DOC_ID = ?", [req.params.PAT_SSN, req.params.DOC_ID], function(error, results, fields)
 		{
             if(error)
 			{
@@ -187,7 +266,7 @@ module.exports = function()
             }
 			else
 			{
-                res.status(202).end();
+                res.redirect(303, '/doctor/' + req.params.DOC_ID);
             }
         });
     });
