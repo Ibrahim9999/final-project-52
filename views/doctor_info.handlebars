@@ -1,7 +1,11 @@
 <form id="update-doctor" action="/doctor" method="post">
-	First name: <input type="text" name="first_name" value="{{doctor.first_name}}"><br>
-	Last name: <input type="text" name="last_name" value="{{doctor.last_name}}"><br>
-	Clinic ID (make dropdown): <input type="int" name="C_ID" value="{{doctor.C_ID}}"><br>
+	<label for="first_name-input">First name: </label><input type="text" name="first_name" id="first_name-input" value="{{doctor.first_name}}" required><br>
+	<label for="last_name-input">Last name: </label><input type="text" name="last_name" id="last_name-input" value="{{doctor.last_name}}" required><br>
+	<label for="clinic-selector">Clinic (add handlebars helper for default): </label><select name="C_ID" id="clinic-selector" value="{{doctor.C_ID}}"> 
+		{{#each clinic}}
+			<option value="{{ID}}">{{name}}</option>
+		{{/each}}
+	</select><br>
 </form>
 
 <br/>
@@ -13,23 +17,9 @@
 
 <br/><br/>
 
-<h3>Add New Patient:</h3>
-
-<form id="add-new-patient" action="/doctor/add-new-patient" method="post">
-	Social Security Number: <input type="number" name="SSN"><br>
-	First name: <input type="text" name="patient_first_name"><br>
-	Last name: <input type="text" name="patient_last_name"><br>
-	Birthdate: <input type="date" name="birthdate"><br>
-</form>
-
-<br/>
-<button onclick="addNewPatient({{doctor.ID}})">Insert</button>
-
-<br/><br/>
-
 <h3>Add Existing Patient: </h3>
 
-<form id="add-existing-patient" action="/doctor/add-existing-patient" method="post">
+<form id="add-patient" action="/doctor/add-patient" method="post">
 	<select name="SSN" id="patient-selector"> 
 		{{#each not_patient}}
 			<option value="{{SSN}}">{{first_name}} {{last_name}} ({{SSN}})</option>
@@ -38,7 +28,7 @@
 </form>
 
 <br/>
-<button onclick="addExistingPatient({{doctor.ID}})">Insert</button>
+<button onclick="addPatient({{doctor.ID}})">Insert</button>
 
 <br/><br/><h2>Prescriptions:</h2>
 

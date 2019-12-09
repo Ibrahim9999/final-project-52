@@ -6,13 +6,15 @@
 	
 	<h3>Add new doctors (fix formatting and error handling):</h3>
 	<form id="add-doctor" action="/doctor" method="post">
-		First name: <input type="text" name="first_name"><br>
-		Last name: <input type="text" name="last_name"><br>
-		C_ID (make this a dropdown): <input type="int" name="C_ID"><br>
+		<label for="first_name-input">First name: </label><input type="text" name="first_name" id="first_name-input" required><br>
+		<label for="last_name-input">Last name: </label><input type="text" name="last_name" id="last_name-input" required><br>
+		<label for="clinic-selector">Clinic: </label><select name="C_ID" id="clinic-selector"> 
+			{{#each clinic}}
+				<option value="{{ID}}">{{name}}</option>
+			{{/each}}
+		</select><br>
 		<br>
 		<input type="submit" value="Submit">
 	</form>
-	
-	<br/>
 	
 </main>

@@ -4,19 +4,12 @@
 	
 	<br/>
 	
-	<h3>Add new patients (fix formatting and error handling):</h3>
+	<h3>Add New Patient:</h3>
 	<form id="add-patient" action="/patient" method="post">
-		SSN: <input type="int" name="SSN"><br>
-		First name: <input type="text" name="first_name"><br>
-		Last name: <input type="text" name="last_name"><br>
-		Birthdate: <input type="date" name="birthdate"><br>
-		<!--
-		Homeworld: <select name="homeworld"> 
-			{{#each doctor}}
-				<option value="{{id}}">{{name}}</option>
-			{{/each}}
-		</select>
-		-->
+		<label for="SSN-input">SSN: </label><input type="text" name="SSN" id="SSN-input" pattern="[0-9]{9}" required title="9 integer digits are required"><br>
+		<label for="first_name-input">First name: </label><input type="text" name="first_name" id="first_name-input" required><br>
+		<label for="last_name-input">Last name: </label><input type="text" name="last_name" id="last_name-input" required><br>
+		<label for="birthdate-input">Birthdate: </label><input type="date" name="birthdate" id="birthdate-input" required><br>
 		<br>
 		<input type="submit" value="Submit">
 	</form>

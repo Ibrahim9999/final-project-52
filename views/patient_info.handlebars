@@ -1,6 +1,6 @@
 <form id="update-patient" action="/patient" method="post">
-	First name: <input type="text" name="first_name" value="{{patient.first_name}}"><br>
-	Last name: <input type="text" name="last_name" value="{{patient.last_name}}"><br>
+	<label for="first_name-input">First name: </label><input type="text" name="first_name" id="first_name-input" value="{{patient.first_name}}" required><br>
+	<label for="last_name-input">Last name: </label><input type="text" name="last_name" id="last_name-input" value="{{patient.last_name}}" required><br>
 </form>
 
 <button onclick="updatePatient({{patient.SSN}})">Update</button>

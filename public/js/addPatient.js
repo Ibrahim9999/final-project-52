@@ -1,24 +1,10 @@
-function addNewPatient(ID)
+function addPatient(ID)
 {
     $.ajax
 	({
-        url: '/doctor/add-new-patient/' + ID,
+        url: '/doctor/add-patient/' + ID,
         type: 'POST',
-        data: $('#add-new-patient').serialize(),
-        success: function(result)
-		{
-            window.location.replace("./");
-        }
-    })
-};
-
-function addExistingPatient(ID)
-{
-    $.ajax
-	({
-        url: '/doctor/add-existing-patient/' + ID,
-        type: 'POST',
-        data: $('#add-existing-patient').serialize(),
+        data: $('#add-patient').serialize(),
         success: function(result)
 		{
             window.location.replace("./");
