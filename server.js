@@ -12,19 +12,28 @@ var bodyParser = require('body-parser');
 var mysql = require('./dbcon.js');
 var app = express();
 
-expressHandlebars.registerHelper('if_null', function(value, options)
-{
-    if (arguments.length < 1)
-        throw new Error("Handlebars Helper \"if_null\" needs 1 parameter");
-    if(value == 'null')
-        return options.inverse(this);
-    
-    return options.fn(this);
+var hbs = expressHandlebars.create
+({
+	helpers:
+	{
+		if_null: function(value, options)
+		{
+			if (arguments.length < 1)
+				throw new Error("Handlebars Helper \"if_null\" needs 1 parameter");
+			
+			var fnTrue = options.fn,
+				fnFalse = options.inverse;
+			
+			return (value == 'null') ? fnTrue(this) : fnFalse(this);
+		}
+	},
+	defaultLayout: 'main',
+	partialsDir: ['views/partials/']
 });
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:true}));
-app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('mysql', mysql);
 app.set('port', process.argv[process.argv.length - 1]);

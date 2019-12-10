@@ -23,7 +23,7 @@
 				<td>{{pID}}</td>
 				<td>{{issue_date}}</td>
 				{{#if clinic_name}}
-					<td><a href="/clinic/{{cID}}">{{clinic_name}}</a></td>
+					<td>{{#if_null clinic_name}}{{clinic_name}}{{else}}<a href="/clinic/{{cID}}">{{clinic_name}}</a>{{/if_null}}</td>
 				{{/if}}
 				{{#if doctor_first_name}}
 					<td><a href="/doctor/{{dID}}">{{doctor_first_name}} {{doctor_last_name}}</a></td>

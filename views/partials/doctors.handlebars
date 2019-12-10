@@ -15,7 +15,7 @@
 				<td>{{first_name}}</td>
 				<td>{{last_name}}</td>
 				{{#if name}}
-					<td><a href="/clinic/{{cID}}">{{name}}</a></td>
+					<td>{{#if_null name}}{{name}}{{else}}<a href="/clinic/{{cID}}">{{name}}</a>{{/if_null}}</td>
 				{{/if}}
 			</tr>
 			
