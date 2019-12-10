@@ -12,6 +12,16 @@ var bodyParser = require('body-parser');
 var mysql = require('./dbcon.js');
 var app = express();
 
+expressHandlebars.registerHelper('if_null', function(value, options)
+{
+    if (arguments.length < 1)
+        throw new Error("Handlebars Helper \"if_null\" needs 1 parameter");
+    if(value == 'null')
+        return options.inverse(this);
+    
+    return options.fn(this);
+});
+
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
