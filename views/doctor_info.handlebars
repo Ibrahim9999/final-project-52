@@ -18,10 +18,10 @@
 
 <br/><br/>
 
-<h3>Add Existing Patient: </h3>
+<h3>Add Existing Patient:</h3>
 
 <form id="add-patient" action="/doctor/add-patient" method="post">
-	<select name="SSN" id="patient-selector"> 
+	<select name="SSN" id="patient-selector">
 		{{#each not_patient}}
 			<option value="{{SSN}}">{{first_name}} {{last_name}} ({{SSN}})</option>
 		{{/each}}
@@ -34,3 +34,23 @@
 <br/><br/><h2>Prescriptions:</h2>
 
 {{> prescriptions}}
+
+<br/><br/>
+
+<h3>Add New Prescription:</h3>
+
+<form id="add-prescription" action="/doctor/add-prescription" method="post">
+	<label for="patient-selector">Patient: </label><select name="SSN" id="patient-selector">
+		{{#each patient}}
+			<option value="{{SSN}}">{{first_name}} {{last_name}} ({{SSN}})</option>
+		{{/each}}
+	</select><br>
+	<label for="medication-selector">Medication: </label><select name="ID" id="medication-selector">
+		{{#each medication}}
+			<option value="{{ID}}">{{name}}</option>
+		{{/each}}
+	</select>
+</form>
+
+<br/>
+<button onclick="addPrescription({{doctor.ID}})">Insert</button>

@@ -148,8 +148,16 @@ module.exports = function()
 		 * LEFT JOIN	clinic		ON doctor.C_ID = clinic.ID
 		 * WHERE prescription.DOC_ID = ?
 		 * ORDER BY prescription.issue_date DESC;
+		 *
+		 *
+		 *
+		 * SELECT
+		 * 		ID,
+		 * 		name
+		 * FROM
+		 * 		medication;
 		 */
-		req.app.get('mysql').pool.query("SELECT ID, first_name, last_name, C_ID FROM doctor WHERE ID = ?; SELECT ID, name FROM clinic; SELECT SSN, patient.first_name, patient.last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate, DOC_ID FROM patient INNER JOIN patient_doctor ON patient.SSN = patient_doctor.PAT_SSN WHERE patient_doctor.DOC_ID = ? ORDER BY patient.SSN ASC; SELECT DISTINCT SSN, patient.first_name, patient.last_name FROM patient WHERE NOT EXISTS (SELECT * FROM patient_doctor WHERE patient_doctor.PAT_SSN = patient.SSN AND patient_doctor.DOC_ID = ?) ORDER BY patient.first_name ASC; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, clinic.name AS clinic_name, clinic.ID AS cID, patient.first_name, patient.last_name, patient.SSN, medication.name, medication.ID FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN patient ON prescription.PAT_SSN = patient.SSN INNER JOIN doctor ON prescription.DOC_ID = doctor.ID LEFT JOIN clinic ON doctor.C_ID = clinic.ID WHERE prescription.DOC_ID = ? ORDER BY prescription.issue_date DESC;", [req.params.ID, req.params.ID, req.params.ID, req.params.ID], function(error, results, fields)
+		req.app.get('mysql').pool.query("SELECT ID, first_name, last_name, C_ID FROM doctor WHERE ID = ?; SELECT ID, name FROM clinic; SELECT SSN, patient.first_name, patient.last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate, DOC_ID FROM patient INNER JOIN patient_doctor ON patient.SSN = patient_doctor.PAT_SSN WHERE patient_doctor.DOC_ID = ? ORDER BY patient.SSN ASC; SELECT DISTINCT SSN, patient.first_name, patient.last_name FROM patient WHERE NOT EXISTS (SELECT * FROM patient_doctor WHERE patient_doctor.PAT_SSN = patient.SSN AND patient_doctor.DOC_ID = ?) ORDER BY patient.first_name ASC; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, clinic.name AS clinic_name, clinic.ID AS cID, patient.first_name, patient.last_name, patient.SSN, medication.name, medication.ID FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN patient ON prescription.PAT_SSN = patient.SSN INNER JOIN doctor ON prescription.DOC_ID = doctor.ID LEFT JOIN clinic ON doctor.C_ID = clinic.ID WHERE prescription.DOC_ID = ? ORDER BY prescription.issue_date DESC; SELECT ID, name FROM medication;", [req.params.ID, req.params.ID, req.params.ID, req.params.ID], function(error, results, fields)
 		{
 			if(error)
 			{
@@ -164,12 +172,13 @@ module.exports = function()
 			res.render('doctor_info',
 			{
 				title: results[0][0].first_name + " " + results[0][0].last_name,
-				jsscripts: ["updateDoctor.js", "addPatient.js", "deletePatient_Doctor.js"],
+				jsscripts: ["updateDoctor.js", "addPatient.js", "deletePatient_Doctor.js", "addPrescription.js"],
 				doctor: results[0][0],
 				clinic: results[1],
 				patient: results[2],
 				not_patient: results[3],
-				prescription: results[4]
+				prescription: results[4],
+				medication: results[5]
 			});
 		});
     });
@@ -183,6 +192,32 @@ module.exports = function()
 		 * 		(?, ?);
 		 */
         req.app.get('mysql').pool.query("INSERT INTO patient_doctor (PAT_SSN, DOC_ID) VALUES (?, ?);", [req.body.SSN, req.params.ID], function(error, results, fields)
+		{
+            if(error)
+			{
+				console.log(JSON.stringify(error));
+                res.write(JSON.stringify(error));
+				res.redirect('500',
+				{
+					error: JSON.stringify(error)
+				});
+            }
+			else
+			{
+                res.redirect(303, '/doctor/' + req.params.ID);
+            }
+        });
+    });
+	
+	/* Inserts an existing patient based on doctor's ID */
+    router.post('/add-prescription/:ID', function(req, res)
+	{
+        /* INSERT INTO prescription
+		 * 		(issue_date, PAT_SSN, MED_ID, DOC_ID)
+		 * 	VALUES
+		 * 		(Now(), ?, ?, ?);
+		 */
+        req.app.get('mysql').pool.query("INSERT INTO prescription (issue_date, PAT_SSN, MED_ID, DOC_ID) VALUES (Now(), ?, ?, ?);", [req.body.SSN, req.body.ID, req.params.ID], function(error, results, fields)
 		{
             if(error)
 			{
