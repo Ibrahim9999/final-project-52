@@ -29,7 +29,7 @@ module.exports = function()
             res.render('patient',
 			{
 				title: "Patients",
-				jsscripts: [],
+				jsscripts: ["checkPatient.js"],
 				patient: results
 			});
         });

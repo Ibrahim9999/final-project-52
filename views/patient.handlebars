@@ -5,15 +5,15 @@
 	<br/>
 	
 	<h3>Add New Patient:</h3>
+	
 	<form id="add-patient" action="/patient" method="post">
 		<label for="SSN-input">SSN: </label><input type="text" name="SSN" id="SSN-input" pattern="[0-9]{9}" required title="9 integer digits are required"><br>
 		<label for="first_name-input">First name: </label><input type="text" name="first_name" id="first_name-input" required><br>
 		<label for="last_name-input">Last name: </label><input type="text" name="last_name" id="last_name-input" required><br>
 		<label for="birthdate-input">Birthdate: </label><input type="date" name="birthdate" id="birthdate-input" required><br>
-		<br>
-		<input type="submit" value="Submit">
 	</form>
 	
-	<br/>
+	<br>
+	<button onclick="checkPatient([{{#each patient}}{{#if @last}}{{SSN}}{{else}}{{SSN}},{{/if}}{{/each}}])">Submit</button>
 	
 </main>
