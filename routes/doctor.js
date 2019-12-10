@@ -266,7 +266,7 @@ module.exports = function()
         });
     });
 	
-	/* Delete a doctor based on id */
+	/* Delete a patient_doctor based on ID and SSN */
     router.delete('/deletePatient_Doctor/:PAT_SSN/:DOC_ID', function(req, res)
 	{
         /* DELETE FROM

@@ -17,6 +17,9 @@
 				{{#if name}}
 					<td>{{#if_null name}}{{name}}{{else}}<a href="/clinic/{{cID}}">{{name}}</a>{{/if_null}}</td>
 				{{/if}}
+				{{#if SSN}}
+					<td class="delete"><button onclick="deletePatient_Doctor({{SSN}},{{ID}}, 'patient')">Delete</button></td>
+				{{/if}}
 			</tr>
 			
 		{{/each}}

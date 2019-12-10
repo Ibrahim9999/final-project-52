@@ -1,8 +1,8 @@
-function deletePatient_Doctor(PAT_SSN, DOC_ID)
+function deletePatient_Doctor(PAT_SSN, DOC_ID, base)
 {
     $.ajax
 	({
-        url: '/doctor/deletePatient_Doctor/' + PAT_SSN + '/' + DOC_ID,
+        url: '/' + base + '/deletePatient_Doctor/' + PAT_SSN + '/' + DOC_ID,
         type: 'DELETE',
         success: function(result)
 		{
