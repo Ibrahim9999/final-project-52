@@ -60,7 +60,7 @@ module.exports = function()
 		
     });
 	
-	/* Displays page for accessig patient info on ssn */
+	/* Displays page for accessing patient info based on ssn */
     router.get('/:SSN', function(req, res)
 	{
 		/* SELECT
@@ -72,6 +72,21 @@ module.exports = function()
 		 * 		patient
 		 * WHERE
 		 *		SSN = ?;
+		 *
+		 *
+		 *
+		 * SELECT
+		 * 		doctor.ID,
+		 *		doctor.first_name,
+		 *		doctor.last_name,
+		 *		IfNull(C_ID, 'null') as C_ID,
+		 *		IfNull(name, 'null') as name
+		 * FROM
+		 * 		doctor
+		 * INNER JOIN	patient_doctor	ON doctor.ID	= patient_doctor.DOC_ID
+		 * LEFT JOIN	clinic			ON doctor.C_ID	= clinic.ID
+		 * WHERE
+		 *		patient_doctor.PAT_SSN = ?;
 		 *
 		 *
 		 *
@@ -93,7 +108,7 @@ module.exports = function()
 		 * WHERE prescription.PAT_SSN = ?
 		 * ORDER BY prescription.issue_date DESC;
 		 */
-		req.app.get('mysql').pool.query("SELECT SSN, first_name, last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate FROM patient WHERE SSN = ?; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, IfNull(clinic.name, 'null') as clinic_name, IfNull(clinic.ID, 'null') as cID, doctor.first_name AS doctor_first_name, doctor.last_name AS doctor_last_name, doctor.ID AS dID, medication.name, medication.ID FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN doctor ON prescription.DOC_ID = doctor.ID LEFT JOIN clinic ON doctor.C_ID = clinic.ID WHERE prescription.PAT_SSN = ? ORDER BY prescription.issue_date DESC;", [req.params.SSN, req.params.SSN], function(error, results, fields)
+		req.app.get('mysql').pool.query("SELECT SSN, first_name, last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate FROM patient WHERE SSN = ?; SELECT doctor.ID, doctor.first_name, doctor.last_name, IfNull(C_ID, 'null') as C_ID, IfNull(name, 'null') as name FROM doctor INNER JOIN patient_doctor ON doctor.ID = patient_doctor.DOC_ID LEFT JOIN clinic ON doctor.C_ID	= clinic.ID  WHERE patient_doctor.PAT_SSN = ?; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, IfNull(clinic.name, 'null') as clinic_name, IfNull(clinic.ID, 'null') as cID, doctor.first_name AS doctor_first_name, doctor.last_name AS doctor_last_name, doctor.ID AS dID, medication.name, medication.ID FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN doctor ON prescription.DOC_ID = doctor.ID LEFT JOIN clinic ON doctor.C_ID = clinic.ID WHERE prescription.PAT_SSN = ? ORDER BY prescription.issue_date DESC;", [req.params.SSN, req.params.SSN, req.params.SSN], function(error, results, fields)
 		{
 			if(error)
 			{
@@ -110,7 +125,8 @@ module.exports = function()
 				title: results[0][0].first_name + " " + results[0][0].last_name + " (" + results[0][0].SSN + ")",
 				jsscripts: ["updatePatient.js"],
 				patient: results[0][0],
-				prescription: results[1]
+				doctor: results[1],
+				prescription: results[2]
 			});
 		});
     });
