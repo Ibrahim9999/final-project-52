@@ -10,6 +10,7 @@ module.exports = function()
 		 * 		doctor.ID,
 		 *		first_name,
 		 *		last_name,
+		 *		IfNull(clinic.ID, 'null') AS cID,
 		 *		IfNull(clinic.name, 'null') AS name
 		 * FROM
 		 * 		doctor
@@ -24,7 +25,7 @@ module.exports = function()
 		 * FROM
 		 * 		clinic;
 		 */
-		req.app.get('mysql').pool.query("SELECT doctor.ID, first_name, last_name, IfNull(clinic.name, 'null') as name FROM doctor LEFT JOIN clinic ON doctor.C_ID = clinic.ID ORDER BY doctor.ID ASC; SELECT ID, name FROM clinic;", function(error, results, fields)
+		req.app.get('mysql').pool.query("SELECT doctor.ID, first_name, last_name, IfNull(clinic.ID, 'null') AS cID, IfNull(clinic.name, 'null') as name FROM doctor LEFT JOIN clinic ON doctor.C_ID = clinic.ID ORDER BY doctor.ID ASC; SELECT ID, name FROM clinic;", function(error, results, fields)
 		{
             if(error)
 			{
