@@ -77,8 +77,8 @@ module.exports = function()
 		 * SELECT
 		 * 		prescription.ID AS pID,
 		 * 		DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date,
-		 * 		clinic.name AS clinic_name,
-		 * 		clinic.ID AS cID,
+		 * 		IfNull(clinic.name, 'null') as clinic_name,
+		 * 		IfNull(clinic.ID, 'null') as cID,
 		 * 		doctor.first_name AS doctor_first_name,
 		 * 		doctor.last_name AS doctor_last_name,
 		 * 		doctor.ID AS dID,
@@ -90,11 +90,11 @@ module.exports = function()
 		 * INNER JOIN	medication	ON prescription.MED_ID	= medication.ID
 		 * INNER JOIN	patient		ON prescription.PAT_SSN	= patient.SSN
 		 * INNER JOIN	doctor		ON prescription.DOC_ID	= doctor.ID
-		 * INNER JOIN	clinic		ON doctor.C_ID = clinic.ID
+		 * LEFT JOIN	clinic		ON doctor.C_ID = clinic.ID
 		 * WHERE medication.ID = ?
 		 * ORDER BY prescription.issue_date DESC;
 		 */
-		req.app.get('mysql').pool.query("SELECT ID, name, CASE WHEN p_safe = 1 THEN 'checked' ELSE '' END AS p_safe FROM medication WHERE ID = ?; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, clinic.name AS clinic_name, clinic.ID AS cID, doctor.first_name AS doctor_first_name, doctor.last_name AS doctor_last_name, doctor.ID AS dID, patient.first_name, patient.last_name, patient.SSN FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN patient ON prescription.PAT_SSN = patient.SSN INNER JOIN doctor ON prescription.DOC_ID = doctor.ID INNER JOIN clinic ON doctor.C_ID = clinic.ID WHERE medication.ID = ? ORDER BY prescription.issue_date DESC;", [req.params.ID, req.params.ID], function(error, results, fields)
+		req.app.get('mysql').pool.query("SELECT ID, name, CASE WHEN p_safe = 1 THEN 'checked' ELSE '' END AS p_safe FROM medication WHERE ID = ?; SELECT prescription.ID pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date, IfNull(clinic.name, 'null') as clinic_name, IfNull(clinic.ID, 'null') as cID, doctor.first_name AS doctor_first_name, doctor.last_name AS doctor_last_name, doctor.ID AS dID, patient.first_name, patient.last_name, patient.SSN FROM prescription INNER JOIN medication ON prescription.MED_ID = medication.ID INNER JOIN patient ON prescription.PAT_SSN = patient.SSN INNER JOIN doctor ON prescription.DOC_ID = doctor.ID LEFT JOIN clinic ON doctor.C_ID = clinic.ID WHERE medication.ID = ? ORDER BY prescription.issue_date DESC;", [req.params.ID, req.params.ID], function(error, results, fields)
 		{
 			if(error)
 			{
