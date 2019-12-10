@@ -27,6 +27,14 @@ VALUES(?,?,?,?);
 /* Single patient page based on SSN*/
  SELECT SSN, first_name, last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate
  FROM	patient WHERE	SSN = ?;
+ 
+  SELECT doctor.ID, doctor.first_name, doctor.last_name, IfNull(C_ID, 'null') as C_ID,
+IfNull(name, 'null') as name, PAT_SSN as SSN
+ FROM  doctor
+ INNER JOIN	patient_doctor	ON doctor.ID	= patient_doctor.DOC_ID
+LEFT JOIN	clinic			ON doctor.C_ID	= clinic.ID
+ WHERE patient_doctor.PAT_SSN = ?;
+ 
  SELECT prescription.ID AS pID,
 	DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date,
 	IfNull(clinic.name, 'null') as clinic_name,
@@ -46,6 +54,9 @@ VALUES(?,?,?,?);
 /*delete patient*/
 DELETE FROM patient WHERE SSN = ?;
 
+/*delete patient_doctor of specific patient*/
+patient_doctor WHERE PAT_SSN = ? AND DOC_ID = ?;
+
 /*edit patient*/
 UPDATE patient
 SET first_name = ?, last_name = ?
@@ -64,17 +75,10 @@ VALUE(?, ?);
 SELECT ID, name, CASE WHEN p_safe = 1 THEN 'checked' ELSE '' END AS p_safe
 FROM medication WHERE ID = ?;
 
-SELECT
-prescription.ID AS pID,
-DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date,
-IfNull(clinic.name, 'null') as clinic_name,
-IfNull(clinic.ID, 'null') as cID,
-doctor.first_name AS doctor_first_name,
-doctor.last_name AS doctor_last_name,
-doctor.ID AS dID,
-patient.first_name,
-patient.last_name,
-patient.SSN
+SELECT prescription.ID AS pID, DATE_FORMAT(prescription.issue_date, '%m/%d/%Y') AS issue_date,
+IfNull(clinic.name, 'null') as clinic_name, IfNull(clinic.ID, 'null') as cID,
+doctor.first_name AS doctor_first_name, doctor.last_name AS doctor_last_name,
+doctor.ID AS dID, patient.first_name, patient.last_name, patient.SSN
 FROM		prescription
  INNER JOIN	medication	ON prescription.MED_ID	= medication.ID
  INNER JOIN	patient		ON prescription.PAT_SSN	= patient.SSN
@@ -187,6 +191,54 @@ DELETE FROM clinic WHERE ID = ?;
 UPDATE clinic
 SET name = ?, address = ?, city = ?, state = ?, zip = ?
 WHERE ID = ?;
+
+/*Searchbar that uses keyword*/
+ SELECT DISTINCT prescription.ID AS pID, DATE_FORMAT(issue_date, '%m/%d/%Y') AS issue_date,
+IfNull(clinic.name, 'null') AS clinic_name, IfNull(clinic.ID, 'null') AS cID, doctor.first_name AS doctor_first_name,
+doctor.last_name AS doctor_last_name, doctor.ID AS dID, SSN, patient.first_name, patient.last_name,
+medication.name, medication.ID
+FROM patient
+ INNER JOIN	prescription	ON patient.SSN			= prescription.PAT_SSN
+ INNER JOIN	medication		ON prescription.MED_ID	= medication.ID
+ INNER JOIN	doctor			ON prescription.DOC_ID	= doctor.ID
+ LEFT JOIN	clinic			ON doctor.C_ID			= clinic.ID
+ WHERE prescription.ID LIKE CONCAT('%', ?, '%') OR
+SSN LIKE CONCAT('%', ?, '%') OR
+patient.first_name LIKE CONCAT('%', ?, '%') OR
+patient.last_name LIKE CONCAT('%', ?, '%') OR
+birthdate LIKE CONCAT('%', ?, '%') OR
+doctor.ID LIKE CONCAT('%', ?, '%') OR
+doctor.first_name LIKE CONCAT('%', ?, '%') OR
+doctor.last_name LIKE CONCAT('%', ?, '%') OR
+C_ID LIKE CONCAT('%', ?, '%') OR
+clinic.name LIKE CONCAT('%', ?, '%') OR
+medication.ID LIKE CONCAT('%', ?, '%') OR
+medication.name LIKE CONCAT('%', ?, '%') OR
+p_safe LIKE CONCAT('%', ?, '%')
+ ORDER BY issue_date DESC;
+
+SELECT SSN, first_name, last_name, DATE_FORMAT(birthdate, '%m/%d/%Y') AS birthdate
+FROM patient  WHERE
+SSN LIKE CONCAT('%', ?, '%') OR
+patient.first_name LIKE CONCAT('%', ?, '%') OR
+patient.last_name LIKE CONCAT('%', ?, '%') OR
+birthdate LIKE CONCAT('%', ?, '%');
+
+SELECT doctor.ID, first_name, last_name, IfNull(clinic.name, 'null') AS name
+ FROM doctor
+LEFT JOIN clinic ON doctor.C_ID = clinic.ID
+ WHERE
+doctor.ID LIKE CONCAT('%', ?, '%') OR
+first_name LIKE CONCAT('%', ?, '%') OR
+last_name LIKE CONCAT('%', ?, '%') OR
+C_ID LIKE CONCAT('%', ?, '%')
+ ORDER BY doctor.ID ASC;
+
+SELECT ID, name, CASE WHEN p_safe = 1 THEN 'Yes' ELSE 'No' END AS p_safe
+ FROM medication
+ WHERE ID LIKE CONCAT('%', ?, '%') OR
+name LIKE CONCAT('%', ?, '%') OR
+p_safe LIKE CONCAT('%', ?, '%');
 
 /*Variations of all the tables we may use*/
 /*Creates doctor_patient m:m table with IDs and last names for context for User*/
