@@ -10,7 +10,7 @@ module.exports = function()
 		 * 		doctor.ID,
 		 *		first_name,
 		 *		last_name,
-		 *		IfNull(clinic.name, 'null') as name
+		 *		IfNull(clinic.name, 'null') AS name
 		 * FROM
 		 * 		doctor
 		 * LEFT JOIN clinic ON doctor.C_ID = clinic.ID
